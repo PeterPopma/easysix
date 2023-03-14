@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    initialization-mode: always
+    username: easysix
+    url: jdbc:postgresql://localhost:5432/easysix
+    platform: easysix
+    password: easysix
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: 'true'
+    hibernate:
+      ddl-auto: none
