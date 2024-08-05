@@ -1,4 +1,4 @@
-package nl.sidn.drs.domaininfo.dto.request;
+package com.peterpopma.easysix.domaininfo.dto.request;
 
 public class AuthInfo {
     String domainPw;
