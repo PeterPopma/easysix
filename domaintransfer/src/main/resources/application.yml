@@ -1,15 +1,20 @@
-spring:
-  datasource:
-    initialization-mode: always
-    username: easysix
-    url: jdbc:postgresql://localhost:5432/easysix
-    platform: easysix
-    password: easysix
-  jpa:
-    properties:
-      hibernate:
-        jdbc:
-          lob:
-            non_contextual_creation: 'true'
-    hibernate:
-      ddl-auto: none
+service:
+  simulated-workload: 1000000
+  domaininfo:
+    uri: http://localhost:8080/domain
+    #uri: http://domaininfo-service/domain
+  domainupdate:
+    uri: http://localhost:8080/domain
+    #uri: http://domainupdate-service/domain
+  contactcreate:
+    uri: http://localhost:8080/contact
+    #uri: http://contactcreate-service/contact
+management:
+  endpoints:
+    web:
+      exposure:
+        include: [ "prometheus", "health", "info" ]
+  endpoint:
+    health:
+      show:
+        details: always

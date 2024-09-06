@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domaininfo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domaininfo
+  template:
+    metadata:
+      labels:
+        app: domaininfo
+    spec:
+      containers:
+      - name: domaininfo
+        image: domaininfo:latest
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: domaininfo-config
+        ports:
+        - containerPort: 3030

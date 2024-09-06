@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domainupdate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domainupdate
+  template:
+    metadata:
+      labels:
+        app: domainupdate
+    spec:
+      containers:
+      - name: domainupdate
+        image: domainupdate:latest
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: domainupdate-config
+        ports:
+        - containerPort: 3030

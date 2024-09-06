@@ -1,0 +1,10 @@
+k3d image import -c easysix-cluster api-gateway:latest
+k3d image import -c easysix-cluster contactinfo:latest
+k3d image import -c easysix-cluster contactcreate:latest
+k3d image import -c easysix-cluster contactupdate:latest
+k3d image import -c easysix-cluster contactdelete:latest
+k3d image import -c easysix-cluster domaininfo:latest
+k3d image import -c easysix-cluster domaincreate:latest
+k3d image import -c easysix-cluster domainupdate:latest
+k3d image import -c easysix-cluster domaindelete:latest
+k3d image import -c easysix-cluster domaintransfer:latest

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domaintransfer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domaintransfer
+  template:
+    metadata:
+      labels:
+        app: domaintransfer
+    spec:
+      containers:
+      - name: domaintransfer
+        image: domaintransfer:latest
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: domaintransfer-config
+        ports:
+        - containerPort: 8080

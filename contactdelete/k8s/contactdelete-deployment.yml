@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contactdelete
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: contactdelete
+  template:
+    metadata:
+      labels:
+        app: contactdelete
+    spec:
+      containers:
+      - name: contactdelete
+        image: contactdelete:latest
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: contactdelete-config
+        ports:
+        - containerPort: 3030

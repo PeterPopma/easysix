@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+     httpclient:
+       wiretap: true
+     httpserver:
+       wiretap: true
+logging:
+  level:
+    root: DEBUG
+    reactor:
+      netty: INFO
+    org:
+      springframework:
+        cloud:
+          gateway: TRACE
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    enabled-by-default: true
+  endpoint:
+    gateway:
+      enabled: true
+  security:
+    enabled: false
+  metrics:
+    export:
+      prometheus:
+        enabled: true

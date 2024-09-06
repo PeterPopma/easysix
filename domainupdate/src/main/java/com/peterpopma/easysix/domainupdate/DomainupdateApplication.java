@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DomainupdateApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DomainupdateApplication.class, args);
+		SpringApplication.run(com.peterpopma.easysix.domainupdate.DomainupdateApplication.class, args);
 	}
 
 }

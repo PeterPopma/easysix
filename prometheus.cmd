@@ -1,0 +1,1 @@
+"C:\Program Files\prometheus-2.53.1.windows-amd64\prometheus.exe" --config.file=C:\Projects\easysix\prometheus.yml

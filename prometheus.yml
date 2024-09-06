@@ -1,0 +1,8 @@
+scrape_configs:
+  - job_name: 'EasySix'
+    metrics_path: '/actuator/prometheus'
+    scrape_interval: 3s
+    static_configs:
+      - targets: ['easysix-cluster.local:8081']
+        labels:
+          application: 'EasySix'

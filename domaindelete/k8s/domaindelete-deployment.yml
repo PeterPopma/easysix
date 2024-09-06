@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domaindelete
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domaindelete
+  template:
+    metadata:
+      labels:
+        app: domaindelete
+    spec:
+      containers:
+      - name: domaindelete
+        image: domaindelete:latest
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: domaindelete-config
+        ports:
+        - containerPort: 3030
