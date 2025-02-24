@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hostcommand-config
+data:
+  application.yml: |
+    logging:
+      level:
+        root: DEBUG
+    spring:
+      datasource:
+        url: jdbc:postgresql://host-postgresql:5432/host              
+        username: hostuser
+        driver-class-name: org.postgresql.Driver
+        password: ${ORGANIZATION_POSTGRES_PASSWORD}
+      jpa:
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: [ "prometheus", "health", "info" ]
+      endpoint:
+        health:
+          show:
+            details: always 

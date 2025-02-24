@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: organization-flyway-migration
+spec:
+  template:
+    spec:
+      containers:
+      - name: flyway
+        image: flyway/flyway:10
+        env:
+        - name: FLYWAY_URL
+          value: jdbc:postgresql://organization-postgresql:5432/organization
+        - name: FLYWAY_USER
+          value: organizationuser
+        - name: FLYWAY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:  organization-postgresql
+              key: password
+        - name: FLYWAY_SCHEMAS
+          value: organization
+        command: ["flyway", "migrate"]
+        volumeMounts:
+        - mountPath: /flyway/sql
+          name: sql
+      volumes:
+        - name: sql
+          configMap:
+            name: organization-migration-configmap
+      restartPolicy: OnFailure
+    

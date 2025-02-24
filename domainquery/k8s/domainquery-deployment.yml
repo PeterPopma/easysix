@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domainquery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domainquery
+  template:
+    metadata:
+      labels:
+        app: domainquery
+    spec:
+      containers:
+      - name: domainquery
+        image: domainquery:latest
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: domainquery-config
+        ports:
+        - containerPort: 8080

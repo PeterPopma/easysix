@@ -1,0 +1,131 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+data:
+  application.yml: |
+    spring:
+      application:
+        name: api-gateway
+      cloud:
+        gateway:
+          routes:
+            - id: domaintransfer_metrics_route
+              uri: http://domaintransfer-service/actuator
+              predicates:
+                - Path=/domaintransfer/actuator/**
+              filters:
+                - StripPrefix=1
+            - id: actuator_route
+              uri: http://api-gateway-service.default.svc.cluster.local:8080
+              predicates:
+                - Path=/actuator/**
+            - id: domaintransfer
+              uri: http://domaintransfer-service/domain/transfer
+              predicates:
+                - Path=/domain/transfer/**
+                - Method=POST
+              filters:
+                - name: RouteCounterFilter
+            - id: domainupdate
+              uri: http://domaincommand-service/domain
+              predicates:
+                - Path=/domain/**
+                - Method=PUT
+              filters:
+                - name: RouteCounterFilter
+            - id: domaininfo
+              uri: http://domainquery-service/domain
+              predicates:
+                - Path=/domain/**
+                - Method=GET
+              filters:
+                - name: RouteCounterFilter
+            - id: domaincreate
+              uri: http://domaincommand-service/domain
+              predicates:
+                - Path=/domain/**
+                - Method=POST
+              filters:
+                - name: RouteCounterFilter
+            - id: domaindelete
+              uri: http://domaincommand-service/domain
+              predicates:
+                - Path=/domain/**
+                - Method=DELETE
+              filters:
+                - name: RouteCounterFilter
+            - id: contactinfo
+              uri: http://contactquery-service/contact
+              predicates:
+                - Path=/contact/**
+                - Method=GET
+              filters:
+                - name: RouteCounterFilter
+            - id: contactcreate
+              uri: http://contactcommand-service/contact
+              predicates:
+                - Path=/contact/**
+                - Method=POST
+              filters:
+                - name: RouteCounterFilter
+            - id: contactupdate
+              uri: http://contactcommand-service/contact
+              predicates:
+                - Path=/contact/**
+                - Method=PUT
+              filters:
+                - name: RouteCounterFilter
+            - id: contactdelete
+              uri: http://contactcommand-service/contact
+              predicates:
+                - Path=/contact/**
+                - Method=DELETE
+              filters:
+                - name: RouteCounterFilter
+            - id: hostinfo
+              uri: http://hostquery-service/host
+              predicates:
+                - Path=/host/**
+                - Method=GET
+              filters:
+                - name: RouteCounterFilter
+            - id: hostcreate
+              uri: http://hostcommand-service/host
+              predicates:
+                - Path=/host/**
+                - Method=POST
+              filters:
+                - name: RouteCounterFilter
+            - id: hostupdate
+              uri: http://hostcommand-service/host
+              predicates:
+                - Path=/host/**
+                - Method=PUT
+              filters:
+                - name: RouteCounterFilter
+            - id: hostdelete
+              uri: http://hostcommand-service/host
+              predicates:
+                - Path=/host/**
+                - Method=DELETE
+              filters:
+                - name: RouteCounterFilter
+          httpclient:
+            wiretap: true
+          httpserver:
+            wiretap: true
+    logging:
+      level:
+        root: DEBUG
+        reactor:
+          netty: INFO
+        org:
+          springframework:
+            cloud:
+              gateway: TRACE
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: [ "prometheus", "health", "info", "gateway" ]

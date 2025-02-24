@@ -1,0 +1,32 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: domain-flyway-migration
+spec:
+  template:
+    spec:
+      containers:
+      - name: flyway
+        image: flyway/flyway:10
+        env:
+        - name: FLYWAY_URL
+          value: jdbc:postgresql://domain-postgresql:5432/domain
+        - name: FLYWAY_USER
+          value: domainuser
+        - name: FLYWAY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name:  domain-postgresql
+              key: password
+        - name: FLYWAY_SCHEMAS
+          value: domain
+        command: ["flyway", "migrate"]
+        volumeMounts:
+        - mountPath: /flyway/sql
+          name: sql
+      volumes:
+        - name: sql
+          configMap:
+            name: domain-migration-configmap
+      restartPolicy: OnFailure
+    

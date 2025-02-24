@@ -6,3 +6,4 @@ data:
   service.domaininfo.uri: "http://domaininfo-service/domain"
   service.domainupdate.uri: "http://domainupdate-service/domain"
   service.contactcreate.uri: "http://contactcreate-service/contact"
+  management.endpoints.web.exposure.include: "*"

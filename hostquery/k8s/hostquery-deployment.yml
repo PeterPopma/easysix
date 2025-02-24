@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hostquery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hostquery
+  template:
+    metadata:
+      labels:
+        app: hostquery
+    spec:
+      containers:
+      - name: hostquery
+        image: hostquery:latest
+        imagePullPolicy: Never
+        envFrom:
+        - configMapRef:
+            name: hostquery-config
+        ports:
+        - containerPort: 8080

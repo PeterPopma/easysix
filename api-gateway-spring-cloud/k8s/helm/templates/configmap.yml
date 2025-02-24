@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-config
+data:
+  application.yml: |
+    {{ .Values.gateway.config.application.yml | indent 4 }}

@@ -1,18 +1,8 @@
-/*
- * $Id: EPPProtocolHandler.java 24539 2011-07-12 11:29:03Z maarten $
- *
- * Copyright (c) 2009 Stichting Internet Domeinregistratie Nederland (SIDN).
- * Utrechtseweg 310 6812 AR Arnhem Nederland All rights reserved.
- *
- * This software is the confidential and proprietary information of SIDN
- * ("Confidential Information"). You shall not disclose such Confidential
- * Information and shall use it only in accordance with the terms of the license
- * agreement you entered into with SIDN.
- */
-package nl.sidn.eppadapter.logic;
+package com.peterpopma.easysix.eppconverter.logic;
 
 import java.net.InetSocketAddress;
 
+import lombok.extern.slf4j.Slf4j;
 import nl.sidn.eppadapter.support.EPPRequestParser;
 import nl.sidn.eppadapter.support.Instellingen;
 import nl.sidn.eppadapter.transport.http.HttpException;
@@ -24,17 +14,9 @@ import nl.sidn.eppadapter.transport.tcp.model.EPPRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-/**
- * Dit is de "Main" class van de EPP Adapter en bevat de business logica voor het afhandelen
- * van de binnenkomende berichten en het doorsturen van die berichten naar de PA.
- * Het antwoord van de PA wordt gecontroleerd en er wordt een antwoord teruggestuurd
- * naar de client. 
- *
- */
+@Slf4j
 public class EPPProtocolHandler {
-	
-	private static final Logger LOGGER = Logger.getLogger(EPPProtocolHandler.class);
-	
+
 	//EPP resultcodes die beginnen met een "1" staan voor een successvol utigeveord request;
 	private static final String EPP_RESULTAAT_CODE_SERIE_OK = "1";
 	
@@ -63,19 +45,14 @@ public class EPPProtocolHandler {
 		sessie = new Sessie();
 		sessie.setIpaddress(socketAddress.getAddress().getHostAddress());
 		response = null;
-		
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Start SocketAdapter EPP protocol handler, sessieId:" + sessie.getId());
-		}
+
+		log.debug("Start SocketAdapter EPP protocol handler, sessieId:" + sessie.getId());
 		
 		//verstuur een greeting naar de client.
 		try {
 			return greet();
-			// Hier bewust de checkstyle uitgezet omdat in de interface naar de gebruiker toe geen fout zichtbaar mag worden.
-            // CHECKSTYLE:OFF
         } catch (Exception e) {
-            // CHECKSTYLE:ON
-			LOGGER.error("Interne fout opgetreden, stuur EPP 2400 terug", e);
+			log.error("Interne fout opgetreden, stuur EPP 2400 terug", e);
 			return greetingFout();
 		}
 	}
@@ -88,10 +65,8 @@ public class EPPProtocolHandler {
 	 * @return De response van de protocol adapter of een foutmelding.
 	 */
 	public String verwerkRequest(String request){
-		
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("verwerkRequest(" + request + ")");
-		}
+
+		log.debug("verwerkRequest(" + request + ")");
 
 		response = null;
 			
@@ -131,7 +106,7 @@ public class EPPProtocolHandler {
 		}
 		
 		/* niet ingelogd, verstuur foutmelding */
-		return fout(FoutType.AUTHORISATIE, eppRequest.getClTRID(), EPPcodeType.EPP_2002, FoutMeldingType.LOGIN_NOG_NIET_INGELOGD.getMsg());
+		return fout(ErrorType.AUTHORISATION, eppRequest.getClTRID(), EPPcodeType.EPP_2002, ErrorMessageType.LOGIN_NOT_YET_LOGGED_IN.getMsg());
 	}
 
 
@@ -153,10 +128,10 @@ public class EPPProtocolHandler {
 				(eppRequest.getUser() == null || eppRequest.getPw() == null)){
 			
 			//de login gegevens missen.
-			return fout(FoutType.PARSE, eppRequest.getClTRID(), EPPcodeType.EPP_2001, FoutMeldingType.PARSE_GEEN_CLID_OF_PW.getMsg());
+			return fout(ErrorType.PARSE, eppRequest.getClTRID(), EPPcodeType.EPP_2001, ErrorMessageType.PARSE_NO_CLID_OR_PW.getMsg());
 		}else{
 			//generieke parse fout
-			return fout(FoutType.PARSE, eppRequest.getClTRID(), EPPcodeType.EPP_2001,eppRequest.getParseFout() );	
+			return fout(ErrorType.PARSE, eppRequest.getClTRID(), EPPcodeType.EPP_2001,eppRequest.getParseFout() );
 				
 		}
 	}
@@ -183,7 +158,7 @@ public class EPPProtocolHandler {
 			}
 			//gebruiker is al ingelogd verstuur foutmelding
 			
-			return fout(FoutType.LOGIN, eppRequest.getClTRID(), EPPcodeType.EPP_2002, FoutMeldingType.LOGIN_REEDS_INGELOGD.getMsg());
+			return fout(ErrorType.LOGIN, eppRequest.getClTRID(), EPPcodeType.EPP_2002, ErrorMessageType.LOGIN_ALREADY_LOGGED_IN.getMsg());
 		}
 		
 		//Bewaar de username en password voor volgende requests 
@@ -225,7 +200,7 @@ public class EPPProtocolHandler {
 			return response.getResponse();
 		}
 
-		return fout(FoutType.LOGIN, eppRequest.getClTRID(), EPPcodeType.EPP_2200, FoutMeldingType.LOGIN_ONGELDIGE_USER_PASSWORD.getMsg());
+		return fout(ErrorType.LOGIN, eppRequest.getClTRID(), EPPcodeType.EPP_2200, ErrorMessageType.LOGIN_INVALID_USER_PASSWORD.getMsg());
 
 	}
 	
@@ -249,7 +224,7 @@ public class EPPProtocolHandler {
 			if(LOGGER.isDebugEnabled()){
 				LOGGER.debug("Gebruiker is niet ingelogd");
 			}
-			return fout(FoutType.LOGIN, eppRequest.getClTRID(), EPPcodeType.EPP_2002, FoutMeldingType.LOGOUT_NOG_NIET_INGELOGD.getMsg());
+			return fout(ErrorType.LOGIN, eppRequest.getClTRID(), EPPcodeType.EPP_2002, ErrorMessageType.LOGOUT_NOT_YET_LOGGED_IN.getMsg());
 		}
 		
 		PARequest req = new PARequest().
@@ -322,8 +297,8 @@ public class EPPProtocolHandler {
 	 * @param msg Een leesbare fout message welke in het fout bericht moet worden opgenomen.
 	 * @return fout bericht.
 	 */
-	protected String fout(FoutType fout, String clTRID, EPPcodeType code, String msg) {
-		assert fout != null;
+	protected String fout(ErrorType errorType, String clTRID, EPPcodeType code, String msg) {
+		assert errorType != null;
 		
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("verstuurFout( fout=" + fout + ", clTRID=" + clTRID + ", code=" + code + ", msg=" + msg);
@@ -334,7 +309,7 @@ public class EPPProtocolHandler {
 		String cleanMsg = StringUtils.trimToEmpty(msg);
 		
 		PARequest req = new PARequest().
-			addPath(fout.getPath()).
+			addPath(errorType.getPath()).
 			addParam("code",code.getCode()).
 			addParam("clTRID", cleanClTRID).
 			addParam("msg",cleanMsg).
@@ -443,11 +418,11 @@ public class EPPProtocolHandler {
 	 */
 	public String interneFout(){
 		String clTRID = (eppRequest != null)?eppRequest.getClTRID():""; 
-		return fout(FoutType.INTERNAL, clTRID ,  EPPcodeType.EPP_2400, FoutMeldingType.INTERNE_FOUT.getMsg());
+		return fout(FoutType.INTERNAL, clTRID ,  EPPcodeType.EPP_2400, ErrorMessageType.INTERNAL_ERROR.getMsg());
 	}
 	
 	private String greetingFout(){
-		return fout(FoutType.INTERNAL, "",  EPPcodeType.EPP_2400, FoutMeldingType.GREETING.getMsg());
+		return fout(FoutType.INTERNAL, "",  EPPcodeType.EPP_2400, ErrorMessageType.GREETING.getMsg());
 	}
 	
 	/** 

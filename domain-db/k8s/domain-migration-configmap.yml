@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: domain-migration-configmap
+data:
+  V1_1__create_table_domain.sql: |
+    CREATE TABLE "domain" (
+      "id" uuid DEFAULT gen_random_uuid(),
+      "name" text NULL,
+      "roid" text NULL,
+      "status" text NULL,
+      "period_type" char(1) NULL,
+      "period_value" SMALLINT NULL,
+      "cl_id" uuid NULL,
+      "cr_id" uuid NULL,
+      "cr_date" timestamp NULL,
+      "up_id" uuid NULL,
+      "up_date" timestamp NULL,
+      "ex_date" timestamp NULL,
+      "tr_date" timestamp NULL,
+      "auth_info.pw" text NULL,
+      "auth_info.ext" text NULL
+    );
+  V1_2__create_table_domain_contact_roles.sql: |
+    CREATE TABLE domain_contact_roles (
+    id SERIAL PRIMARY KEY,  -- Surrogate key for simplicity and flexibility
+    domain_id UUID NOT NULL,  -- Foreign key to the domain table
+    contact_id UUID NOT NULL,  -- Foreign key to the contact table
+    role text NOT NULL,  -- Role for the contact in this domain (e.g., admin, technical, billing)
+
+    -- Foreign key constraints
+    CONSTRAINT fk_domain
+        FOREIGN KEY (domain_id)
+        REFERENCES domains (id)
+        ON DELETE CASCADE,
+        
+    CONSTRAINT fk_contact
+        FOREIGN KEY (contact_id)
+        REFERENCES contacts (id)
+        ON DELETE CASCADE
+    );
+  V1_3__create_table_domain_hosts.sql: |
+    CREATE TABLE domain_hosts (
+    id SERIAL PRIMARY KEY,  -- Surrogate key for simplicity and flexibility
+    sequence_number int2 NULL,  
+    domain_id UUID NOT NULL,  -- Foreign key to the domain table
+    host_id UUID NOT NULL,  -- Foreign key to the host table
+    
+    -- Foreign key constraints
+    CONSTRAINT fk_domain
+        FOREIGN KEY (domain_id)
+        REFERENCES domains (id)
+        ON DELETE CASCADE,
+        
+    CONSTRAINT fk_host
+        FOREIGN KEY (host_id)
+        REFERENCES host (id)
+        ON DELETE CASCADE
+    );
