@@ -1,15 +1,14 @@
 package com.peterpopma.easysix.organizationquery.service;
 
-import com.peterpopma.easysix.organizationquery.dao.OrganizationEntity;
-import com.peterpopma.easysix.organizationquery.dto.OrganizationObject;
+import com.peterpopma.easysix.organizationquery.entity.OrganizationEntity;
+import com.peterpopma.easysix.organizationquery.dto.OrganizationDto;
 
 import java.util.List;
-import java.util.UUID;
 
 public class OrganizationConverter {
 
-    public static OrganizationObject toDto(OrganizationEntity entity) {
-        return new OrganizationObject(
+    public static OrganizationDto toDto(OrganizationEntity entity) {
+        return new OrganizationDto(
             entity.getId(),
             entity.getRoid(),
             entity.getStatus() != null ? String.join(",", entity.getStatus()) : null,
@@ -39,7 +38,7 @@ public class OrganizationConverter {
         );
     }
 
-    public static OrganizationEntity toEntity(OrganizationObject dto) {
+    public static OrganizationEntity toEntity(OrganizationDto dto) {
         OrganizationEntity entity = new OrganizationEntity();
         entity.setId(dto.id());
         entity.setRoid(dto.roid());

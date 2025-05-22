@@ -1,12 +1,11 @@
 package com.peterpopma.easysix.domaintransfer.service;
 
 import com.peterpopma.easysix.domaintransfer.dto.AuthInfo;
-import com.peterpopma.easysix.domaintransfer.dto.ContactObject;
-import com.peterpopma.easysix.domaintransfer.dto.DomainObject;
+import com.peterpopma.easysix.domaintransfer.dto.ContactDto;
+import com.peterpopma.easysix.domaintransfer.dto.DomainDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -36,14 +35,14 @@ public class DomainTransferService {
     public void transferDomain(String domainName)
     {
         SimulateWorkload();
-        DomainObject domainObject = webClientBuilder.build()
+        DomainDto domainObject = webClientBuilder.build()
                 .get()
                 .uri(domainInfoURI + "/" + domainName)
                 .retrieve()
-                .bodyToMono(DomainObject.class).block();
+                .bodyToMono(DomainDto.class).block();
 
         // create 3 contacts for the receiving registrar. they should be copies of the former registrar.
-        ContactObject contactObject = new ContactObject();
+        ContactDto contactObject = new ContactDto();
         AuthInfo authInfo = new AuthInfo();
         contactObject.setAuthInfo(authInfo);
 
@@ -51,7 +50,7 @@ public class DomainTransferService {
                 .post()
                 .uri(contactCreateURI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(contactObject), ContactObject.class)
+                .body(Mono.just(contactObject), ContactDto.class)
                 .retrieve()
                 .bodyToMono(String.class).block();
 
@@ -59,7 +58,7 @@ public class DomainTransferService {
                 .post()
                 .uri(contactCreateURI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(contactObject), ContactObject.class)
+                .body(Mono.just(contactObject), ContactDto.class)
                 .retrieve()
                 .bodyToMono(String.class).block();
 
@@ -67,7 +66,7 @@ public class DomainTransferService {
                 .post()
                 .uri(contactCreateURI)
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(Mono.just(contactObject), ContactObject.class)
+                .body(Mono.just(contactObject), ContactDto.class)
                 .retrieve()
                 .bodyToMono(String.class).block();
 
@@ -75,7 +74,7 @@ public class DomainTransferService {
         response = webClientBuilder.build()
                 .put()
                 .uri(domainUpdateURI)
-                .body(Mono.just(domainObject), DomainObject.class)
+                .body(Mono.just(domainObject), DomainDto.class)
                 .retrieve()
                 .bodyToMono(String.class).block();
     }

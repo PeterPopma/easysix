@@ -1,0 +1,39 @@
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb"
+          version="2.1">
+  
+    <!-- Package for domain-1.0.xsd -->
+    <bindings schemaLocation="domain-1.0.xsd"
+              node="/xs:schema"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <schemaBindings>
+            <package name="com.peterpopma.easysix.eppproxy.model.domain"/>
+        </schemaBindings>
+    </bindings>
+
+    <!-- Package for host-1.0.xsd -->
+    <bindings schemaLocation="host-1.0.xsd"
+              node="/xs:schema"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <schemaBindings>
+            <package name="com.peterpopma.easysix.eppproxy.model.host"/>
+        </schemaBindings>
+    </bindings>
+
+    <!-- Package for contact-1.0.xsd -->
+    <bindings schemaLocation="contact-1.0.xsd"
+              node="/xs:schema"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <schemaBindings>
+            <package name="com.peterpopma.easysix.eppproxy.model.contact"/>
+        </schemaBindings>
+    </bindings>
+    
+        <!-- Package for org-1.0.xsd -->
+    <bindings schemaLocation="org-1.0.xsd"
+              node="/xs:schema"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
+        <schemaBindings>
+            <package name="com.peterpopma.easysix.eppproxy.model.org"/>
+        </schemaBindings>
+    </bindings>
+</bindings>

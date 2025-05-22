@@ -1,7 +1,7 @@
 package com.peterpopma.easysix.organizationquery.service;
 
-import com.peterpopma.easysix.organizationquery.dao.OrganizationEntity;
-import com.peterpopma.easysix.organizationquery.dto.OrganizationObject;
+import com.peterpopma.easysix.organizationquery.entity.Organization;
+import com.peterpopma.easysix.organizationquery.dto.OrganizationDto;
 import com.peterpopma.easysix.organizationquery.repository.OrganizationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class OrganizationService {
     @Value("${service.simulated-workload}")
     private int simulatedWorkLoad;
 
-    public OrganizationObject findOrganizationById(UUID organizationId)
+    public OrganizationDto findOrganizationById(UUID organizationId)
     {
         Optional<OrganizationEntity> existingOrganizationOpt = organizationRepository.findById(organizationId);
         if (existingOrganizationOpt.isPresent()) {

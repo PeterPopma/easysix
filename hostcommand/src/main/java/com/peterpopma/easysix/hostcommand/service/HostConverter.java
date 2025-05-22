@@ -1,11 +1,11 @@
 package com.peterpopma.easysix.hostcommand.service;
 
-import com.peterpopma.easysix.hostcommand.dao.HostEntity;
-import com.peterpopma.easysix.hostcommand.dto.HostObject;
+import com.peterpopma.easysix.hostcommand.entity.HostEntity;
+import com.peterpopma.easysix.hostcommand.dto.HostDto;
 
 public class HostConverter {
 
-    public static HostEntity toHostEntity(HostObject hostObject) {
+    public static HostEntity toHostEntity(HostDto hostObject) {
         HostEntity entity = new HostEntity();
         
         entity.setId(hostObject.id());

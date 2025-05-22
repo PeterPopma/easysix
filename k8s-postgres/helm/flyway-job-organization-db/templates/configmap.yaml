@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flyway-migrations
+data:
+  V1_1__create_table_organization.sql: | 
+CREATE TABLE organization (
+    id UUID PRIMARY KEY,       -- internal ID
+    org_id TEXT NOT NULL UNIQUE,                         -- external EPP ID (<id>)
+    roid TEXT,                                            -- Repository object identifier
+    parent_id TEXT,
+    voice TEXT,
+    fax TEXT,
+    email TEXT,
+    url TEXT,
+    cl_id TEXT,
+    cr_id TEXT NOT NULL,
+    cr_date TIMESTAMP NOT NULL DEFAULT now(),          -- created at (UTC)
+    up_id TEXT,
+    up_date TIMESTAMP,
+    version BIGINT NOT NULL DEFAULT 0 
+-- other related entities (status, roles, postalInfo, contact) are separate tables
+);
+CREATE TABLE organization_status (
+    organization_id UUID NOT NULL REFERENCES organization(id) ON DELETE CASCADE,
+    status TEXT NOT NULL CHECK (status IN (
+        'ok', 'hold', 'terminated',
+        'clientDeleteProhibited', 'clientUpdateProhibited', 'clientLinkProhibited',
+        'linked', 'pendingCreate', 'pendingUpdate', 'pendingDelete',
+        'serverDeleteProhibited', 'serverUpdateProhibited', 'serverLinkProhibited'
+    )),
+    PRIMARY KEY (organization_id, status)
+);
+CREATE TABLE organization_role (
+    id UUID PRIMARY KEY,
+    organization_id UUID NOT NULL REFERENCES organization(id) ON DELETE CASCADE,               -- FK to the organization table
+    type TEXT NOT NULL CHECK (
+        type IN ('admin', 'tech', 'billing', 'reseller')
+    ),
+    role_id TEXT,      -- this is an optional id given by customers
+    version BIGINT NOT NULL DEFAULT 0
+);
+CREATE UNIQUE INDEX uniq_org_role_type ON organization_role (organization_id, type);
+CREATE TABLE organization_role_status (
+    organization_role_id UUID NOT NULL REFERENCES organization_role(id) ON DELETE CASCADE,
+    status TEXT NOT NULL CHECK (status IN ('ok', 'clientLinkProhibited', 'linked', 'serverLinkProhibited')),   
+    PRIMARY KEY (organization_role_id, status)
+);
+CREATE TABLE postal_info (
+    id UUID PRIMARY KEY,
+    organization_id UUID NOT NULL REFERENCES organization(id) ON DELETE CASCADE,
+    -- loc (localized) or int (internationalized)
+    type TEXT CHECK (type IN ('loc', 'int')) NOT NULL,
+    name TEXT NOT NULL, -- name of the organization in this language context
+    -- Address block is optional
+    street1 TEXT,
+    street2 TEXT,
+    street3 TEXT,
+    city TEXT,
+    state_province TEXT,
+    postal_code TEXT,
+    country_code CHAR(2), -- ISO alpha-2 country code
+    version BIGINT NOT NULL DEFAULT 0 
+);
+CREATE UNIQUE INDEX ux_org_postalinfo_type ON postal_info (organization_id, type);
+CREATE TABLE organization_contact (
+    id UUID PRIMARY KEY,
+    organization_id UUID NOT NULL REFERENCES organization(id) ON DELETE CASCADE,
+    contact_type TEXT NOT NULL CHECK (
+        contact_type IN ('admin', 'billing', 'linked', 'tech', 'abuse', 'custom')
+    ),
+    contact_type_name TEXT,   -- this is used when contact_type = 'custom'
+    contact_id varchar(16),   -- this links to a contact table
+    version BIGINT NOT NULL DEFAULT 0 
+);

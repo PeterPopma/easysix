@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: flyway-migrate
+spec:
+  template:
+    spec:
+      containers:
+        - name: flyway
+          image: flyway/flyway:latest
+          command: ["flyway", "migrate"]
+          env:
+            - name: FLYWAY_URL
+              value: "jdbc:postgresql://host-db:5432/hostdb"
+            - name: FLYWAY_USER
+              value: "hostuser"
+            - name: FLYWAY_PASSWORD
+              value: "secret"
+          volumeMounts:
+            - name: flyway-scripts
+              mountPath: /flyway/sql
+      restartPolicy: Never
+      volumes:
+        - name: flyway-scripts
+          configMap:
+            name: flyway-migrations

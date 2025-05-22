@@ -1,7 +1,7 @@
 package com.peterpopma.easysix.contactquery.service;
 
-import com.peterpopma.easysix.contactquery.dao.ContactEntity;
-import com.peterpopma.easysix.contactquery.dto.ContactObject;
+import com.peterpopma.easysix.contactquery.entity.ContactEntity;
+import com.peterpopma.easysix.contactquery.dto.ContactDto;
 import com.peterpopma.easysix.contactquery.repository.ContactRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class ContactService {
     @Value("${service.simulated-workload}")
     private int simulatedWorkLoad;
 
-    public ContactObject findContactById(UUID contactId)
+    public ContactDto findContactById(UUID contactId)
     {
         Optional<ContactEntity> existingContactOpt = contactRepository.findById(contactId);
         if (existingContactOpt.isPresent()) {

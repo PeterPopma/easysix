@@ -1,6 +1,6 @@
 package com.peterpopma.easysix.hostcommand.controller;
 
-import com.peterpopma.easysix.hostcommand.dto.HostObject;
+import com.peterpopma.easysix.hostcommand.dto.HostDto;
 import com.peterpopma.easysix.hostcommand.service.HostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class HostCommandController {
     HostService hostService;
 
     @PostMapping("")
-    public ResponseEntity<String> hostCreate(@RequestBody HostObject host )
+    public ResponseEntity<String> hostCreate(@RequestBody HostDto host )
     {
         hostService.createHost(host);
         log.debug("hostCreate: " + host.id());
@@ -29,7 +29,7 @@ public class HostCommandController {
     }
     
     @PutMapping("")
-    public ResponseEntity<String> hostUpdate(@RequestBody HostObject host )
+    public ResponseEntity<String> hostUpdate(@RequestBody HostDto host )
     {
         hostService.updateHost(host);
         log.debug("hostUpdate: " + host.id());

@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: port-forward-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: port-forward
+        image: bitnami/kubectl:latest
+        command:
+          - "sh"
+          - "-c"
+          - |
+            kubectl port-forward -n database-contact svc/contact-db 54325:5432 &
+            kubectl port-forward -n database-domain svc/domain-db 54326:5432 &
+            kubectl port-forward -n database-host svc/host-db 54327:5432 &
+            kubectl port-forward -n database-organization svc/organization-db 54328:5432 &
+            kubectl port-forward -n db2-ns svc/mysql-svc 13306:3306 &
+            sleep infinity
+      restartPolicy: Never

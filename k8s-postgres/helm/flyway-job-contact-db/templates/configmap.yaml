@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flyway-migrations
+data:
+  contact-schema.sql: |
+    CREATE TABLE contact (
+        id UUID PRIMARY KEY,       -- internal ID
+        version BIGINT DEFAULT 0 NOT NULL,
+        contact_id varchar(16) NOT NULL UNIQUE,                     -- external EPP ID (<id>)
+        voice TEXT,
+        fax TEXT,
+        email TEXT NOT NULL,
+        cl_id TEXT NOT NULL,
+        cr_id TEXT NOT NULL,
+        cr_date TIMESTAMP NOT NULL,
+        up_id TEXT,
+        up_date TIMESTAMP,
+        tr_date TIMESTAMP
+    );
+    CREATE TABLE postal_info (
+        id UUID PRIMARY KEY),       -- internal ID
+        version BIGINT DEFAULT 0 NOT NULL,
+        contact_id UUID REFERENCES contact(id) ON DELETE CASCADE,
+        type TEXT NOT NULL CHECK (type IN ('loc', 'int')),
+        name TEXT NOT NULL,
+        org TEXT
+    );
+    CREATE TABLE address (
+        id UUID PRIMARY KEY,       -- internal ID
+        version BIGINT DEFAULT 0 NOT NULL,
+        postal_info_id UUID REFERENCES postal_info(id) ON DELETE CASCADE,
+        street1 TEXT,
+        street2 TEXT,
+        street3 TEXT,
+        city TEXT NOT NULL,
+        sp TEXT,
+        pc TEXT,
+        cc CHAR(2) NOT NULL
+    );
+    CREATE TABLE auth_info (
+        contact_id UUID PRIMARY KEY REFERENCES contact(id) ON DELETE CASCADE,
+        pw TEXT,
+        ext TEXT
+    );
+    CREATE TABLE status (
+        id UUID PRIMARY KEY,       -- internal ID
+        contact_id UUID REFERENCES contact(id) ON DELETE CASCADE,
+        s TEXT NOT NULL CHECK (
+            s IN (
+                'clientDeleteProhibited',
+                'clientTransferProhibited',
+                'clientUpdateProhibited',
+                'linked',
+                'ok',
+                'pendingCreate',
+                'pendingDelete',
+                'pendingTransfer',
+                'pendingUpdate',
+                'serverDeleteProhibited',
+                'serverTransferProhibited',
+                'serverUpdateProhibited'
+            )
+        ),
+        lang TEXT DEFAULT 'en',
+        message TEXT
+    );
+    CREATE TABLE disclose (
+        contact_id UUID PRIMARY KEY REFERENCES contact(id) ON DELETE CASCADE,
+        flag BOOLEAN NOT NULL
+    );
+    CREATE TABLE disclose_element (
+        id UUID PRIMARY KEY,       -- internal ID
+        disclose_id UUID REFERENCES disclose(contact_id) ON DELETE CASCADE,
+        element_type TEXT NOT NULL,
+        loc_type TEXT NOT NULL CHECK (loc_type IN ('loc', 'int'))
+    );

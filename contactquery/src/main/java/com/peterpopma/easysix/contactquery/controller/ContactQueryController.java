@@ -1,6 +1,6 @@
 package com.peterpopma.easysix.contactquery.controller;
 
-import com.peterpopma.easysix.contactquery.dto.ContactObject;
+import com.peterpopma.easysix.contactquery.dto.ContactDto;
 import com.peterpopma.easysix.contactquery.service.ContactService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ public class ContactQueryController {
     ContactService contactService;
 
     @GetMapping("/{contactId}")
-    public ContactObject contactInfo(@PathVariable UUID contactId)
+    public ContactDto contactInfo(@PathVariable UUID contactId)
     {
-        ContactObject contactObject = contactService.findContactById(contactId);
+        ContactDto contactObject = contactService.findContactById(contactId);
         log.debug("contactInfo: " + contactId);
 
         return contactObject;

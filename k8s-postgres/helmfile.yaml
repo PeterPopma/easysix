@@ -1,0 +1,65 @@
+helmDefaults:
+  timeout: 600
+  
+repositories:
+  - name: bitnami
+    url: https://charts.bitnami.com/bitnami
+    oci: false  # Ensures Helmfile properly tracks it
+    
+releases:
+  - name: pv-chart
+    chart: ./helm/pv-chart
+
+  - name: contact-db
+    namespace: database-contact
+    chart: bitnami/postgresql
+    values:
+      - values/values-contactdb.yaml
+      
+  - name: domain-db
+    namespace: database-domain
+    chart: bitnami/postgresql
+    #chart: C:\Users\peter.popma\AppData\Local\Temp\helm\repository\postgresql-16.5.0.tgz
+    values:
+      - values/values-domaindb.yaml
+
+  - name: host-db
+    namespace: database-host
+    chart: bitnami/postgresql
+    values:
+      - values/values-hostdb.yaml
+
+  - name: organization-db
+    namespace: database-organization
+    chart: bitnami/postgresql
+    values:
+      - values/values-organizationdb.yaml
+
+  - name: flyway-contact-db
+    namespace: database-contact
+    chart: ./helm/flyway-job-contact-db
+    needs:
+      - database-contact/contact-db  # Ensure PostgreSQL deploys first
+      
+  - name: flyway-domain-db
+    namespace: database-domain
+    chart: ./helm/flyway-job-domain-db
+    needs:
+      - database-domain/domain-db  # Ensure PostgreSQL deploys first
+      
+  - name: flyway-host-db
+    namespace: database-host
+    chart: ./helm/flyway-job-host-db
+    needs:
+      - database-host/host-db  # Ensure PostgreSQL deploys first
+
+  - name: flyway-organization-db
+    namespace: database-organization
+    chart: ./helm/flyway-job-organization-db
+    needs:
+      - database-organization/organization-db  # Ensure PostgreSQL deploys first      
+      
+  - name: k3d-port-forward
+    namespace: port-forward-ns
+    chart: ./helm/k3d-port-forward
+

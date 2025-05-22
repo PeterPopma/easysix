@@ -1,6 +1,6 @@
 package com.peterpopma.easysix.domaincommand.controller;
 
-import com.peterpopma.easysix.domaincommand.dto.DomainObject;
+import com.peterpopma.easysix.domaincommand.dto.DomainDto;
 import com.peterpopma.easysix.domaincommand.service.DomainService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class DomainCommandController {
     DomainService domainService;
 
     @PostMapping("")
-    public ResponseEntity<String> domainCreate(@RequestBody DomainObject domain )
+    public ResponseEntity<String> domainCreate(@RequestBody DomainDto domain )
     {
         long startTime = System.currentTimeMillis();
         domainService.createDomain(domain);
@@ -29,7 +29,7 @@ public class DomainCommandController {
     }
     
     @PutMapping("")
-    public ResponseEntity<String> domainUpdate(@RequestBody DomainObject domain )
+    public ResponseEntity<String> domainUpdate(@RequestBody DomainDto domain )
     {
         long startTime = System.currentTimeMillis();
         domainService.updateDomain(domain);

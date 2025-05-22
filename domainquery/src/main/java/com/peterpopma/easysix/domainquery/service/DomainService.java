@@ -1,7 +1,7 @@
 package com.peterpopma.easysix.domainquery.service;
 
 import com.peterpopma.easysix.domainquery.dto.AuthInfo;
-import com.peterpopma.easysix.domainquery.dto.DomainObject;
+import com.peterpopma.easysix.domainquery.dto.DomainDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,12 +13,12 @@ public class DomainService {
     @Value("${service.simulated-workload}")
     private int simulatedWorkLoad;
 
-    public DomainObject findDomainByName(String domainName)
+    public DomainDto findDomainByName(String domainName)
     {
         SimulateWorkload();
 
         AuthInfo domainAuthInfo = new AuthInfo();
-        DomainObject domainObject = new DomainObject();
+        DomainDto domainObject = new DomainDto();
         domainObject.setAuthInfo(domainAuthInfo);
 
         return domainObject;

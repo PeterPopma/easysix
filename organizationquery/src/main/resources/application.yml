@@ -6,7 +6,7 @@ spring:
     password: ''  # No password for H2 by default
   jpa:
     hibernate:
-      ddl-auto: none  # Disable JPA's automatic schema management, Flyway will handle it
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
@@ -14,8 +14,6 @@ spring:
     console:
       enabled: true  # Enable H2 web console for development
       path: /h2-console  # The path to access the H2 console
-service:
-  simulated-workload: 1000000
 management:
   endpoints:
     web:

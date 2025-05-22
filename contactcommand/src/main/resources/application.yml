@@ -10,12 +10,11 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+        default_schema: contact
   h2:
     console:
       enabled: true  # Enable H2 web console for development
       path: /h2-console  # The path to access the H2 console
-service:
-  simulated-workload: 1000000
 management:
   endpoints:
     web:

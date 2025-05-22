@@ -1,6 +1,6 @@
 package com.peterpopma.easysix.hostquery.controller;
 
-import com.peterpopma.easysix.hostquery.dto.HostObject;
+import com.peterpopma.easysix.hostquery.dto.HostDto;
 import com.peterpopma.easysix.hostquery.service.HostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ public class HostQueryController {
     HostService hostService;
 
     @GetMapping("/{hostId}")
-    public HostObject hostInfo(@PathVariable UUID hostId)
+    public HostDto hostInfo(@PathVariable UUID hostId)
     {
-        HostObject hostObject = hostService.findHostById(hostId);
+        HostDto hostObject = hostService.findHostById(hostId);
         log.debug("hostInfo: " + hostId);
 
         return hostObject;

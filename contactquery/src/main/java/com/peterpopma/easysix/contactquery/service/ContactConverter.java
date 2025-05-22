@@ -1,12 +1,12 @@
 package com.peterpopma.easysix.contactquery.service;
 
-import com.peterpopma.easysix.contactquery.dao.ContactEntity;
-import com.peterpopma.easysix.contactquery.dto.ContactObject;
+import com.peterpopma.easysix.contactquery.entity.ContactEntity;
+import com.peterpopma.easysix.contactquery.dto.ContactDto;
 
 public class ContactConverter {
 
-    public static ContactObject toContactObject(ContactEntity entity) {
-        return new ContactObject(
+    public static ContactDto toContactObject(ContactEntity entity) {
+        return new ContactDto(
                 entity.getId(),
                 entity.getRoid(),
                 entity.getStatus(),

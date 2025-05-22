@@ -1,6 +1,6 @@
 package com.peterpopma.easysix.domaincommand.service;
 
-import com.peterpopma.easysix.domaincommand.dto.DomainObject;
+import com.peterpopma.easysix.domaincommand.dto.DomainDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,12 +12,12 @@ public class DomainService {
     @Value("${service.simulated-workload}")
     private int simulatedWorkLoad;
 
-    public void createDomain(DomainObject domain)
+    public void createDomain(DomainDto domain)
     {
         SimulateWorkload();
     }    
     
-    public void updateDomain(DomainObject domain)
+    public void updateDomain(DomainDto domain)
     {
         SimulateWorkload();
     }

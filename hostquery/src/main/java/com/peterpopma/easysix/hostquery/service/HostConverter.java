@@ -1,14 +1,14 @@
 package com.peterpopma.easysix.hostquery.service;
 
-import com.peterpopma.easysix.hostquery.dao.HostEntity;
-import com.peterpopma.easysix.hostquery.dto.HostObject;
+import com.peterpopma.easysix.hostquery.entity.HostEntity;
+import com.peterpopma.easysix.hostquery.dto.HostDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class HostConverter {
 
-    public static HostObject toDto(HostEntity entity) {
-        return new HostObject(
+    public static HostDto toDto(HostEntity entity) {
+        return new HostDto(
             entity.getId(),
             entity.getName(),
             entity.getRoid(),

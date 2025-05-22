@@ -1,6 +1,6 @@
 package com.peterpopma.easysix.organizationquery.controller;
 
-import com.peterpopma.easysix.organizationquery.dto.OrganizationObject;
+import com.peterpopma.easysix.organizationquery.dto.OrganizationDto;
 import com.peterpopma.easysix.organizationquery.service.OrganizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +19,9 @@ public class OrganizationQueryController {
     OrganizationService organizationService;
 
     @GetMapping("/{organizationId}")
-    public OrganizationObject organizationInfo(@PathVariable UUID organizationId)
+    public OrganizationDto organizationInfo(@PathVariable UUID organizationId)
     {
-        OrganizationObject organizationObject = organizationService.findOrganizationById(organizationId);
+        OrganizationDto organizationObject = organizationService.findOrganizationById(organizationId);
         log.debug("organizationInfo: " + organizationId);
 
         return organizationObject;

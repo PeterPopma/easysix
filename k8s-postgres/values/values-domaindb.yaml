@@ -1,0 +1,21 @@
+fullnameOverride: domain-db
+auth:
+  username: domainuser
+  password: secret
+  database: domaindb
+primary:
+  persistence:
+    enabled: true
+    size: 5Gi           # Specify the capacity here (this is the requested size for the PVC)
+    accessModes:
+      - ReadWriteOnce    # Access mode for the PVC
+    storageClass: "manual"  # Set to "manual" to avoid dynamic provisioning (you will create the PV yourself)
+    existingClaim: ""      # Leave empty to create a new PVC
+    volumeMode: Filesystem  # Volume mode (usually Filesystem for hostPath)
+    service:
+      port: 5432
+    
+    # HostPath configuration
+    hostPath:
+      path: /mnt/data/domaindb  # Path on the host system where you want to mount the volume
+      type: DirectoryOrCreate   # Ensures the directory is created if it doesn't exist

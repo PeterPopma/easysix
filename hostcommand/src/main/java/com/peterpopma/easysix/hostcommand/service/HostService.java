@@ -1,7 +1,7 @@
 package com.peterpopma.easysix.hostcommand.service;
 
-import com.peterpopma.easysix.hostcommand.dao.HostEntity;
-import com.peterpopma.easysix.hostcommand.dto.HostObject;
+import com.peterpopma.easysix.hostcommand.entity.HostEntity;
+import com.peterpopma.easysix.hostcommand.dto.HostDto;
 import com.peterpopma.easysix.hostcommand.repository.HostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +22,13 @@ public class HostService {
     @Value("${service.simulated-workload}")
     private int simulatedWorkLoad;
 
-    public void createHost(HostObject host)
+    public void createHost(HostDto host)
     {
         HostEntity hostEntity = HostConverter.toHostEntity(host);
         hostRepository.save(hostEntity);
     }
     
-    public void updateHost(HostObject host)
+    public void updateHost(HostDto host)
     {
         HostEntity hostEntity = HostConverter.toHostEntity(host);
         Optional<HostEntity> existingHostOpt = hostRepository.findById(host.id());
