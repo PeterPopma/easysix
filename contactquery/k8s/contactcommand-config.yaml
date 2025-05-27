@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: contactcommand-config
+data:
+  application.yml: |
+    logging:
+      level:
+        root: DEBUG
+    spring:
+      datasource:
+        url: jdbc:postgresql://contact-postgresql:5432/contact              
+        username: contactuser
+        driver-class-name: org.postgresql.Driver
+        password: ${CONTACT_POSTGRES_PASSWORD}
+      jpa:
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: [ "prometheus", "health", "info" ]
+      endpoint:
+        health:
+          show:
+            details: always 

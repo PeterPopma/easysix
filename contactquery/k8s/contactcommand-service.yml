@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: contactcommand-service
+spec:
+  type: ClusterIP
+  selector:
+    app: contactcommand
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+

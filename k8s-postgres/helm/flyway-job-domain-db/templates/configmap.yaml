@@ -4,6 +4,103 @@ metadata:
   name: flyway-migrations
 data:
   V1_1__create_table_domain.sql: |
+-- Main table to store domain info
+CREATE TABLE domain (
+    id UUID PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    cl_id TEXT,
+    cr_id TEXT,
+    cr_date TIMESTAMP,
+    up_id TEXT,
+    up_date TIMESTAMP,
+    ex_date TIMESTAMP,
+    tr_date TIMESTAMP,
+    auth_info_pw TEXT,
+    auth_info_ext TEXT,
+    registrar_id UUID,
+    reseller_id UUID,
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now(),
+    version BIGINT NOT NULL DEFAULT 0,
+    CONSTRAINT registrar_not_reseller CHECK (registrar_id IS DISTINCT FROM reseller_id)
+);
+-- Table for domain statuses
+CREATE TABLE domain_status (
+    id UUID PRIMARY KEY,
+    domain_id UUID NOT NULL REFERENCES domain(id) ON DELETE CASCADE,
+    status TEXT NOT NULL,
+    lang VARCHAR(10),
+    message TEXT,
+    version BIGINT NOT NULL DEFAULT 0
+);
+-- Table for domain contacts
+CREATE TABLE domain_contact (
+    id UUID PRIMARY KEY,
+    domain_id UUID NOT NULL,
+    contact_id UUID NOT NULL,
+    role TEXT NOT NULL CHECK (role IN ('registrant', 'admin', 'tech', 'billing')),
+    UNIQUE (domain_id, role),
+    version BIGINT NOT NULL DEFAULT 0
+);
+-- Table for nameservers (hostObj)
+CREATE TABLE domain_host_obj (
+    id UUID PRIMARY KEY,
+    domain_id UUID NOT NULL REFERENCES domain(id) ON DELETE CASCADE,
+    host_name TEXT NOT NULL,
+    version BIGINT NOT NULL DEFAULT 0
+);
+-- Table for hostAttr style nameservers
+CREATE TABLE domain_host_attr (
+    id UUID PRIMARY KEY,
+    domain_id UUID NOT NULL REFERENCES domain(id) ON DELETE CASCADE,
+    host_name TEXT NOT NULL,
+    version BIGINT NOT NULL DEFAULT 0
+);
+-- Host addresses for hostAttr
+CREATE TABLE domain_host_addr (
+    id UUID PRIMARY KEY,
+    host_attr_id UUID NOT NULL REFERENCES domain_host_attr(id) ON DELETE CASCADE,
+    ip TEXT NOT NULL,
+    ip_version VARCHAR(5) CHECK (ip_version IN ('v4', 'v6')) NOT NULL,
+    version BIGINT NOT NULL DEFAULT 0
+);
+-- Linked many-to-many organizations (DNS operator, proxy)
+CREATE TABLE domain_organization (
+    id UUID PRIMARY KEY,
+    domain_id UUID NOT NULL REFERENCES domain(id) ON DELETE CASCADE,
+    organization_id UUID NOT NULL,
+    role TEXT NOT NULL,  -- e.g., "dns-operator", "privacy-proxy", etc.
+    status TEXT,
+    created_at TIMESTAMP DEFAULT now(),
+    updated_at TIMESTAMP DEFAULT now(),
+    version BIGINT NOT NULL DEFAULT 0,
+    UNIQUE(domain_id, organization_id, role)
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     CREATE TABLE "domain" (
       "id" uuid DEFAULT gen_random_uuid(),
       "name" text NULL,

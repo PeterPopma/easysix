@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: domainquery
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: domainquery
+  template:
+    metadata:
+      labels:
+        app: domainquery
+    spec:
+      containers:
+      - name: domainquery
+        image: domainquery:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+        env:
+        - name: DOMAIN_POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: domain-postgresql
+              key: password
+        - name: SPRING_CONFIG_LOCATION
+          value: "classpath:/application.yml,/config/application.yml"
+      volumes:
+      - name: config-volume
+        configMap:
+          name: domainquery-config

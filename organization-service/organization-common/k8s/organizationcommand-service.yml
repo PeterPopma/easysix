@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: organizationcommand-service
+spec:
+  type: ClusterIP
+  selector:
+    app: organizationcommand
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+
