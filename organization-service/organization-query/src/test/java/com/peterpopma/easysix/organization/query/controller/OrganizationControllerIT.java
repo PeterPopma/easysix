@@ -1,4 +1,4 @@
-package com.peterpopma.easysix.organization.command.controller;
+package com.peterpopma.easysix.organization.query.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.peterpopma.easysix.organization.entity.Organization;

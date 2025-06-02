@@ -9,7 +9,6 @@ spring:
       ddl-auto: create  # Disable JPA's automatic schema management, Flyway will handle it
     properties:
       hibernate:
-        default_schema: organization
         dialect: org.hibernate.dialect.H2Dialect
   h2:
     console:

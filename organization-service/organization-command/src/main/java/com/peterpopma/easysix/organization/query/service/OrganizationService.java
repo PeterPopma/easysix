@@ -1,4 +1,4 @@
-package com.peterpopma.easysix.organization.command.service;
+package com.peterpopma.easysix.organization.query.service;
 
 import com.peterpopma.easysix.organization.dto.OrganizationDto;
 

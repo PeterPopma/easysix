@@ -1,7 +1,7 @@
-package com.peterpopma.easysix.organization.command.controller;
+package com.peterpopma.easysix.organization.query.controller;
 
 import com.peterpopma.easysix.organization.dto.OrganizationDto;
-import com.peterpopma.easysix.organization.command.service.OrganizationService;
+import com.peterpopma.easysix.organization.query.service.OrganizationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

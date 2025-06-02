@@ -11,6 +11,7 @@ spring:
       ddl-auto: none  # Disable JPA's automatic schema management, Flyway will handle it
     properties:
       hibernate:
+        default_schema: organization
         dialect: org.hibernate.dialect.PostgreSQLDialect
 logging:
   level:
