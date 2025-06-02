@@ -24,6 +24,7 @@
     </modules>
 
     <properties>
+        <organization-service.version>1.0.0</organization-service.version>
         <java.version>21</java.version>
 
         <!-- Dependency versions -->

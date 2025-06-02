@@ -1,0 +1,4 @@
+8090 - domain command
+8091 - domain query
+8092 - organization command
+8093 - organization query

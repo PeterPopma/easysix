@@ -1,11 +1,10 @@
-package com.peterpopma.easysix.domain.command;
+package com.peterpopma.easysix.organization.command;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-@ComponentScan(basePackages = "com.peterpopma.easysix")
-class DomainCommandApplicationTests {
+class OrganizationCommandApplicationTests {
 
 	@Test
 	void contextLoads() {

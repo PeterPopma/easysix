@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RemoteRepositoriesConfiguration">
+    <remote-repository>
+      <option name="id" value="fury-gitlab-releases" />
+      <option name="name" value="FURY project releases" />
+      <option name="url" value="https://gitlab.registry.fury.ca/api/v4/projects/956/packages/maven" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="https://repo.maven.apache.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="fury-gitlab-central-proxy" />
+      <option name="name" value="Gitlab proxy of central" />
+      <option name="url" value="https://gitlab.registry.fury.ca/api/v4/projects/958/packages/maven" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="Maven Central repository" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="fury-gitlab-snapshots" />
+      <option name="name" value="FURY project snapshots" />
+      <option name="url" value="https://gitlab.registry.fury.ca/api/v4/projects/957/packages/maven" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+  </component>
+</project>

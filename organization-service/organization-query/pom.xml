@@ -10,9 +10,9 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>organization-command</artifactId>
-	<name>organization-command</name>
-	<description>organization command application</description>
+	<artifactId>organization-query</artifactId>
+	<name>organization-query</name>
+	<description>organization query service</description>
 
 	<dependencies>
 		<dependency>
@@ -105,8 +105,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>${maven.compiler.plugin.version}</version>
 				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
+					<source>21</source>
+					<target>21</target>
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>

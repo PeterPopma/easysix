@@ -3,9 +3,7 @@ package com.peterpopma.easysix.domain.query.controller;
 import com.peterpopma.easysix.domain.dto.DomainDto;
 import com.peterpopma.easysix.domain.mapper.DomainMapper;
 import com.peterpopma.easysix.domain.query.service.DomainService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +34,17 @@ public class DomainQueryController {
     public ResponseEntity<DomainDto> getDomain(@Parameter(description = "Domain ID") @PathVariable UUID id) {
         var domain = domainService.findById(id);
         return ResponseEntity.ok(domainMapper.toDto(domain));
+    }
+    @RequestMapping(value = "/{id}", method = RequestMethod.HEAD)
+    public ResponseEntity<Void> headExistsById(@PathVariable UUID id) {
+        boolean exists = domainService.exists(id);
+        if (exists)
+        {
+            return ResponseEntity.ok().build();
+        }
+        else
+        {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
