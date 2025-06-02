@@ -1,18 +1,14 @@
 package com.peterpopma.easysix.organization.command.service;
 
 import com.peterpopma.easysix.organization.dto.OrganizationDto;
-import com.peterpopma.easysix.organization.dto.OrganizationRoleDto;
 import com.peterpopma.easysix.organization.entity.*;
-import com.peterpopma.easysix.organization.repository.OrganizationContactRepository;
+import com.peterpopma.easysix.organization.mapper.OrganizationMapper;
 import com.peterpopma.easysix.organization.repository.OrganizationRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -21,7 +17,6 @@ import java.util.UUID;
 public class OrganizationServiceImpl implements OrganizationService {
 
     private final OrganizationRepository organizationRepository;
-    private final OrganizationContactRepository organizationContactRepository;
     private final OrganizationMapper mapper;
 
     @Override
