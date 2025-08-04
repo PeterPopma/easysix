@@ -1,7 +1,16 @@
 package com.peterpopma.easysix.organization.mapper;
 
-import com.peterpopma.easysix.organization.dto.*;
-import com.peterpopma.easysix.organization.entity.*;
+import com.peterpopma.easysix.organization.dto.OrganizationContactDto;
+import com.peterpopma.easysix.organization.dto.OrganizationDto;
+import com.peterpopma.easysix.organization.dto.OrganizationRoleDto;
+import com.peterpopma.easysix.organization.dto.PostalInfoDto;
+
+import com.peterpopma.easysix.organization.entity.Organization;
+import com.peterpopma.easysix.organization.entity.OrganizationContact;
+import com.peterpopma.easysix.organization.entity.OrganizationRole;
+import com.peterpopma.easysix.organization.entity.OrganizationRoleStatus;
+import com.peterpopma.easysix.organization.entity.OrganizationStatus;
+import com.peterpopma.easysix.organization.entity.PostalInfo;
 import com.peterpopma.easysix.organization.model.OrganizationRoleStatusType;
 import com.peterpopma.easysix.organization.model.OrganizationStatusType;
 import org.mapstruct.*;
@@ -44,14 +53,18 @@ public interface OrganizationMapper {
     }
 
     default Set<OrganizationRoleStatusType> mapOrganizationStatuses(Set<OrganizationRoleStatus> statuses) {
-        if (statuses == null) return null;
+        if (statuses == null) {
+            return Set.of();
+        }
         return statuses.stream()
                 .map(OrganizationRoleStatus::getStatus)
                 .collect(Collectors.toSet());
     }
 
     default Set<OrganizationRoleStatus> mapOrganizationStatuses(Set<OrganizationRoleStatusType> statusTypes, OrganizationRole role) {
-        if (statusTypes == null) return null;
+        if (statusTypes == null) {
+            return Set.of();
+        }
         return statusTypes.stream()
                 .map(type -> new OrganizationRoleStatus(role, type))
                 .collect(Collectors.toSet());
@@ -66,7 +79,7 @@ public interface OrganizationMapper {
     // Explicit mapping for Set<OrganizationStatus>
     default Set<OrganizationStatusType> map(Set<OrganizationStatus> statuses) {
         if (statuses == null) {
-            return null;
+            return Set.of();
         }
         return statuses.stream()
                 .map(OrganizationStatus::getStatus)
@@ -78,7 +91,9 @@ public interface OrganizationMapper {
     @Mapping(target = "organization", ignore = true)
     @Mapping(target = "statuses", ignore = true) // we handle this manually
     default OrganizationRole toEntity(OrganizationRoleDto dto, Organization parentOrg) {
-        if (dto == null) return null;
+        if (dto == null) {
+            return null;
+        }
 
         OrganizationRole role = new OrganizationRole();
         // Set id only if it's not null
@@ -98,7 +113,9 @@ public interface OrganizationMapper {
     }
 
     List<OrganizationRoleDto> toRoleDtos(List<OrganizationRole> roles);
+
     List<OrganizationContactDto> toContactDtos(List<OrganizationContact> contacts);
+
     List<PostalInfoDto> toPostalInfoDtos(List<PostalInfo> postalInfos);
 
     @Named("toInstant")

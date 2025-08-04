@@ -5,10 +5,8 @@ import com.peterpopma.easysix.domain.exception.DomainNotFoundException;
 import com.peterpopma.easysix.domain.repository.DomainRepository;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 

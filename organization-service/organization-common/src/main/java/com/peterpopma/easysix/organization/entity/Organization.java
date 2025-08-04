@@ -61,8 +61,13 @@ public class Organization {
     private Set<PostalInfo> postalInfos;
 
     public void addStatus(OrganizationStatus status) {
-        if (status == null) return;
-        if (this.statuses == null) this.statuses = new HashSet<>();
+        if (status == null) {
+            return;
+        }
+        if (this.statuses == null)
+        {
+            this.statuses = new HashSet<>();
+        }
         status.setOrganization(this);
         this.statuses.add(status);
     }
@@ -76,15 +81,23 @@ public class Organization {
     }
 
     public void addContact(OrganizationContact contact) {
-        if (contact == null) return;
-        if (this.contacts == null) this.contacts = new HashSet<>();
+        if (contact == null) {
+            return;
+        }
+        if (this.contacts == null) {
+            this.contacts = new HashSet<>();
+        }
         contact.setOrganization(this);
         this.contacts.add(contact);
     }
 
     public void addPostalInfo(PostalInfo pi) {
-        if (pi == null) return;
-        if (this.postalInfos == null) this.postalInfos = new HashSet<>();
+        if (pi == null) {
+            return;
+        }
+        if (this.postalInfos == null) {
+            this.postalInfos = new HashSet<>();
+        }
         pi.setOrganization(this);
         this.postalInfos.add(pi);
     }

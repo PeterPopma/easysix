@@ -17,11 +17,11 @@ logging:
   level:
     org:
       hibernate:
-        sql: DEBUG
+        sql: INFO
         type:
           descriptor:
             sql:
-              BasicBinder: TRACE
+              BasicBinder: INFO
         orm:
           jdbc:
-            bind: TRACE
+            bind: INFO

@@ -1,5 +1,6 @@
 package com.peterpopma.easysix.organization.entity;
 
+import com.peterpopma.easysix.organization.model.PostalInfoType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -22,7 +23,8 @@ public class PostalInfo {
     private Organization organization;
 
     @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private PostalInfoType type;
 
     @Column(nullable = false)
     private String name;

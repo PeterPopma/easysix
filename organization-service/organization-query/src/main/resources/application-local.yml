@@ -7,21 +7,24 @@ spring:
     username: easysix
     password: easysix
   jpa:
+    show-sql: false
     hibernate:
       ddl-auto: none  # Disable JPA's automatic schema management, Flyway will handle it
     properties:
       hibernate:
         default_schema: organization
         dialect: org.hibernate.dialect.PostgreSQLDialect
+        generate_statistics: false
+        default_batch_fetch_size: 16
 logging:
   level:
     org:
       hibernate:
-        sql: DEBUG
+        sql: INFO
         type:
           descriptor:
             sql:
-              BasicBinder: TRACE
+              BasicBinder: INFO
         orm:
           jdbc:
-            bind: TRACE
+            bind: INFO

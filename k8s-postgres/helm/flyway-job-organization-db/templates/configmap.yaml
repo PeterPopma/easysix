@@ -24,33 +24,34 @@ CREATE TABLE organization (
 CREATE TABLE organization_status (
     organization_id UUID NOT NULL REFERENCES organization(id) ON DELETE CASCADE,
     status TEXT NOT NULL CHECK (status IN (
-        'ok', 'hold', 'terminated',
-        'clientDeleteProhibited', 'clientUpdateProhibited', 'clientLinkProhibited',
-        'linked', 'pendingCreate', 'pendingUpdate', 'pendingDelete',
-        'serverDeleteProhibited', 'serverUpdateProhibited', 'serverLinkProhibited'
+        'OK', 'HOLD', 'TERMINATED',
+        'CLIENT_DELETE_PROHIBITED', 'CLIENT_UPDATE_PROHIBITED', 'CLIENT_LINK_PROHIBITED',
+        'LINKED', 'PENDING_CREATE', 'PENDING_UPDATE', 'PENDING_DELETE',
+        'SERVER_DELETE_PROHIBITED', 'SERVER_UPDATE_PROHIBITED', 'SERVER_LINK_PROHIBITED'
     )),
     PRIMARY KEY (organization_id, status)
 );
+CREATE INDEX idx_org_status_org_id ON organization_status(organization_id);
 CREATE TABLE organization_role (
     id UUID PRIMARY KEY,
     organization_id UUID NOT NULL REFERENCES organization(id) ON DELETE CASCADE,               -- FK to the organization table
-    type TEXT NOT NULL CHECK (
-        type IN ('admin', 'tech', 'billing', 'reseller')
-    ),
+    type TEXT,
     role_id TEXT,      -- this is an optional id given by customers
     version BIGINT NOT NULL DEFAULT 0
 );
 CREATE UNIQUE INDEX uniq_org_role_type ON organization_role (organization_id, type);
+CREATE INDEX idx_org_role_org_id ON organization_role(organization_id);
 CREATE TABLE organization_role_status (
     organization_role_id UUID NOT NULL REFERENCES organization_role(id) ON DELETE CASCADE,
-    status TEXT NOT NULL CHECK (status IN ('ok', 'clientLinkProhibited', 'linked', 'serverLinkProhibited')),   
+    status TEXT NOT NULL CHECK (status IN ('OK', 'CLIENT_LINK_PROHIBITED', 'LINKED', 'SERVER_LINK_PROHIBITED')),   
     PRIMARY KEY (organization_role_id, status)
 );
+CREATE INDEX idx_org_role_status_role_id ON organization_role_status(organization_role_id);
 CREATE TABLE postal_info (
     id UUID PRIMARY KEY,
     organization_id UUID NOT NULL REFERENCES organization(id) ON DELETE CASCADE,
     -- loc (localized) or int (internationalized)
-    type TEXT CHECK (type IN ('loc', 'int')) NOT NULL,
+    type TEXT CHECK (type IN ('LOC', 'INT')) NOT NULL,
     name TEXT NOT NULL, -- name of the organization in this language context
     -- Address block is optional
     street1 TEXT,
@@ -63,13 +64,16 @@ CREATE TABLE postal_info (
     version BIGINT NOT NULL DEFAULT 0 
 );
 CREATE UNIQUE INDEX ux_org_postalinfo_type ON postal_info (organization_id, type);
+CREATE INDEX idx_postal_info_org_id ON postal_info(organization_id);
 CREATE TABLE organization_contact (
     id UUID PRIMARY KEY,
     organization_id UUID NOT NULL REFERENCES organization(id) ON DELETE CASCADE,
     contact_type TEXT NOT NULL CHECK (
-        contact_type IN ('admin', 'billing', 'linked', 'tech', 'abuse', 'custom')
+        contact_type IN ('ADMIN', 'BILLING', 'TECH', 'ABUSE', 'CUSTOM')
     ),
     contact_type_name TEXT,   -- this is used when contact_type = 'custom'
     contact_id varchar(16),   -- this links to a contact table
     version BIGINT NOT NULL DEFAULT 0 
 );
+CREATE INDEX idx_org_contact_org_id ON organization_contact(organization_id);
+

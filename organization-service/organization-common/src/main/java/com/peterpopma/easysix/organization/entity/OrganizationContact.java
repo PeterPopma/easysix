@@ -1,5 +1,6 @@
 package com.peterpopma.easysix.organization.entity;
 
+import com.peterpopma.easysix.organization.model.OrganizationContactType;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.UUID;
@@ -20,7 +21,8 @@ public class OrganizationContact {
     private Organization organization;
 
     @Column(name = "contact_type", nullable = false)
-    private String contactType;
+    @Enumerated(EnumType.STRING)
+    private OrganizationContactType contactType;
 
     @Column(name = "contact_type_name")
     private String contactTypeName;

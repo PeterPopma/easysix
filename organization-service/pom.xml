@@ -35,4 +35,34 @@
         <maven.compiler.plugin.version>3.14.0</maven.compiler.plugin.version>
     </properties>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.26.0</version> <!-- Use latest stable version -->
+                <configuration>
+                    <linkXRef>false</linkXRef>
+                    <excludeRoots>
+                        <excludeRoot>${project.build.directory}/generated-sources/annotations</excludeRoot>
+                    </excludeRoots>
+                    <printFailingErrors>true</printFailingErrors>
+                    <failOnViolation>true</failOnViolation> <!-- Optional -->
+                    <rulesets>
+                        <ruleset>/rulesets/java/quickstart.xml</ruleset>
+                    </rulesets>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
 </project>

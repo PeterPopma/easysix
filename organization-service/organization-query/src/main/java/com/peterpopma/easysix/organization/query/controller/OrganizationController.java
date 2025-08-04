@@ -1,7 +1,8 @@
 package com.peterpopma.easysix.organization.query.controller;
 
+import com.peterpopma.easysix.organization.dto.OrganizationCheckRequestDto;
+import com.peterpopma.easysix.organization.dto.OrganizationCheckResponseDto;
 import com.peterpopma.easysix.organization.dto.OrganizationDto;
-import com.peterpopma.easysix.organization.entity.Organization;
 import com.peterpopma.easysix.organization.mapper.OrganizationMapper;
 import com.peterpopma.easysix.organization.query.service.OrganizationService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,8 +10,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +35,7 @@ public class OrganizationController {
         return ResponseEntity.ok(organizationMapper.toDto(organization));
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.HEAD)
+    @RequestMapping(path = "/{id}", method = RequestMethod.HEAD)
     public ResponseEntity<Void> headExistsById(@PathVariable UUID id) {
         boolean exists = organizationService.exists(id);
         if (exists) {
@@ -45,4 +44,13 @@ public class OrganizationController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PostMapping("/check")
+    public ResponseEntity<OrganizationCheckResponseDto> checkOrganizations(
+            @RequestBody OrganizationCheckRequestDto requestDto) {
+
+        OrganizationCheckResponseDto responseDto = organizationService.checkAvailability(requestDto);
+        return ResponseEntity.ok(responseDto);
+    }
+
 }

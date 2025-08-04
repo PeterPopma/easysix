@@ -2,3 +2,7 @@
 8091 - domain query
 8092 - organization command
 8093 - organization query
+8094 - contact command
+8095 - contact query
+8096 - host command
+8097 - host query
